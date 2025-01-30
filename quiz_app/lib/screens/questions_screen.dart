@@ -4,9 +4,9 @@ import 'package:quiz_app/components/styled_text.dart';
 import 'package:quiz_app/data/questions_list.dart';
 
 class QuestionsScreen extends StatefulWidget {
-  const QuestionsScreen(this.buttonHandler, {super.key});
+  const QuestionsScreen(this.returnToHome, {super.key});
 
-  final void Function() buttonHandler;
+  final void Function() returnToHome;
 
   @override
   State<QuestionsScreen> createState() => _QuestionsScreenState();
@@ -14,7 +14,7 @@ class QuestionsScreen extends StatefulWidget {
 
 class _QuestionsScreenState extends State<QuestionsScreen> {
   void buttonHandler() {
-    widget.buttonHandler();
+    widget.returnToHome();
   }
 
   int questionIndex = 0;
