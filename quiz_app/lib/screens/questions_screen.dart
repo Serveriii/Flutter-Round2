@@ -4,28 +4,23 @@ import 'package:quiz_app/components/styled_text.dart';
 import 'package:quiz_app/data/questions_list.dart';
 
 class QuestionsScreen extends StatefulWidget {
-  const QuestionsScreen(this.returnToHome, {super.key});
+  const QuestionsScreen(
+      {super.key, required this.answerHandler, required this.switchScreen});
 
-  final void Function() returnToHome;
+  final void Function(String answer) answerHandler;
+  final void Function(String screen) switchScreen;
 
   @override
   State<QuestionsScreen> createState() => _QuestionsScreenState();
 }
 
 class _QuestionsScreenState extends State<QuestionsScreen> {
-  void buttonHandler() {
-    widget.returnToHome();
-  }
-
   int questionIndex = 0;
 
-  void answerQuestion() {
+  void answerQuestion(answer) {
     setState(() {
+      widget.answerHandler(answer);
       questionIndex++;
-      if (questionIndex == questionsList.length) {
-        questionIndex = 0;
-        buttonHandler();
-      }
     });
   }
 
@@ -42,8 +37,11 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
           children: [
             StyledText(currentQuestion.question),
             const SizedBox(height: 20),
-            ...currentQuestion.shuffleAnswers().map((answer) =>
-                AnswerButton(answer: answer, buttonHandler: answerQuestion)),
+            ...currentQuestion.shuffleAnswers().map((answer) => AnswerButton(
+                answer: answer,
+                buttonHandler: () {
+                  answerQuestion(answer);
+                })),
           ],
         ),
       ),
