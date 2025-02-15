@@ -7,25 +7,55 @@ class QuestionsSummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        children: summaryData.map((data) {
-          return Row(children: [
-            Text(((data['question_index'] as int) + 1).toString()),
-            SizedBox(width: 10),
-            Expanded(
-              child: Column(
-                children: [
-                  Text(data['question'] as String),
-                  SizedBox(height: 10),
-                  Text('Correct Answer: ${data['correct_answer']}'),
-                  Text('Selected Answer: ${data['selected_answer']}'),
-                ],
-              ),
-            )
-          ]);
-        }).toList(),
+    return SizedBox(
+      height: 370,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: SingleChildScrollView(
+          child: Column(
+            children: summaryData.map((data) {
+              return Row(children: [
+                Container(
+                    width: 30,
+                    height: 30,
+                    decoration: BoxDecoration(
+                      color: data['selected_answer'] == data['correct_answer']
+                          ? const Color.fromARGB(255, 1, 255, 115)
+                          : const Color.fromARGB(255, 243, 49, 0),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.all(5),
+                    child:
+                        Text(((data['question_index'] as int) + 1).toString())),
+                Expanded(
+                  child: Column(
+                    children: [
+                      SizedBox(height: 10),
+                      Text(
+                        data['question'] as String,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: const Color.fromARGB(255, 255, 255, 255)),
+                      ),
+                      Text(
+                        '${data['correct_answer']}',
+                        textAlign: TextAlign.center,
+                      ),
+                      Text(
+                        '${data['selected_answer']}',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: const Color.fromARGB(255, 2, 83, 116),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ]);
+            }).toList(),
+          ),
+        ),
       ),
     );
   }

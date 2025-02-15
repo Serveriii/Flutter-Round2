@@ -4,14 +4,13 @@ import 'package:quiz_app/components/styled_text.dart';
 import 'package:quiz_app/data/questions_list.dart';
 
 class ResultsScreen extends StatelessWidget {
-  const ResultsScreen(this.selectedAnswers, this.switchScreen, {super.key});
+  const ResultsScreen(this.selectedAnswers, this.restartQuiz, {super.key});
 
   final List<String> selectedAnswers;
-  final void Function(String screen) switchScreen;
+  final void Function() restartQuiz;
 
   void buttonHandler() {
-    switchScreen('start-screen');
-    selectedAnswers.clear();
+    restartQuiz();
   }
 
   List<Map<String, Object>> getSummaryData() {
@@ -31,15 +30,22 @@ class ResultsScreen extends StatelessWidget {
 
   @override
   Widget build(context) {
+    final summaryData = getSummaryData();
+    final numTotalQuestions = questionsList.length;
+    final numCorrectAnswers = summaryData.where((data) {
+      return data['selected_answer'] == data['correct_answer'];
+    }).length;
+
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         spacing: 30,
         children: [
-          StyledText('You answered X out of Y questions correctly!'),
-          QuestionsSummary(getSummaryData()),
+          StyledText(
+              'You answered $numCorrectAnswers out of $numTotalQuestions questions correctly!'),
+          QuestionsSummary(summaryData),
           OutlinedButton.icon(
-            onPressed: () => switchScreen('start-screen'),
+            onPressed: buttonHandler,
             style: OutlinedButton.styleFrom(
               foregroundColor: Colors.white,
               backgroundColor: Colors.orangeAccent,
